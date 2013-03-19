@@ -2,6 +2,7 @@ package org.springframework.data.elasticsearch.entities;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Version;
 
 @Document(indexName = "book",type = "book")
 
@@ -11,12 +12,15 @@ public class Book {
     private String id;
     private String name;
     private Long price;
+    @Version
+    private Long version;
 
     public Book(){}
 
-    public Book(String id, String name) {
+    public Book(String id, String name,Long version) {
         this.id = id;
         this.name = name;
+        this.version = version;
     }
 
     public String getId() {
@@ -41,5 +45,13 @@ public class Book {
 
     public void setPrice(Long price) {
         this.price = price;
+    }
+
+    public long getVersion() {
+        return version;
+    }
+
+    public void setVersion(long version) {
+        this.version = version;
     }
 }

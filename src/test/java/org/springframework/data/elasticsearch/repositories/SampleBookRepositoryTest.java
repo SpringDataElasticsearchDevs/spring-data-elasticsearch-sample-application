@@ -55,6 +55,7 @@ public class SampleBookRepositoryTest {
         Book book = new Book();
         book.setId("123455");
         book.setName("Spring Data Elasticsearch");
+        book.setVersion(System.currentTimeMillis());
         //Indexing using repository
         repository.save(book);
         //lets try to search same record in elasticsearch
@@ -66,8 +67,8 @@ public class SampleBookRepositoryTest {
     @Test
     public void shouldBulkIndexMultipleBookEntities(){
 
-        Book book1 = new Book(RandomStringUtils.random(5),"Spring Data");
-        Book book2 = new Book(RandomStringUtils.random(5),"Spring Data Elasticsearch");
+        Book book1 = new Book(RandomStringUtils.random(5),"Spring Data",System.currentTimeMillis());
+        Book book2 = new Book(RandomStringUtils.random(5),"Spring Data Elasticsearch",System.currentTimeMillis());
         //Bulk Index using repository
         repository.save(asList(book1, book2));
         //lets try to search same records in elasticsearch
@@ -81,8 +82,8 @@ public class SampleBookRepositoryTest {
     @Ignore("not to run as just for showing usage of repository ! might throw java.lang.OutOfMemoryError :-) ")
     public void crudRepositoryTest(){
 
-        Book book1 = new Book(RandomStringUtils.random(5),"Spring Data");
-        Book book2 = new Book(RandomStringUtils.random(5),"Spring Data Elasticsearch");
+        Book book1 = new Book(RandomStringUtils.random(5),"Spring Data",System.currentTimeMillis());
+        Book book2 = new Book(RandomStringUtils.random(5),"Spring Data Elasticsearch",System.currentTimeMillis());
         List<Book> books = Arrays.asList(book1,book2);
 
         //indexing single document
@@ -116,7 +117,8 @@ public class SampleBookRepositoryTest {
 
         List<Book> books = new ArrayList<Book>();
         for(int i=1; i<=10 ; i++){
-           books.add(new Book(RandomStringUtils.random(5),"Spring Data Rocks !"));
+           books.add(new Book(RandomStringUtils.random(5),"Spring Data Rocks !",System.currentTimeMillis()));
+
         }
         //Bulk Index using repository
         repository.save(books);
@@ -128,8 +130,8 @@ public class SampleBookRepositoryTest {
     @Test
     public void shouldExecuteCustomSearchQueries(){
 
-        Book book1 = new Book(RandomStringUtils.random(5),"Custom Query");
-        Book book2 = new Book(RandomStringUtils.random(5),null);
+        Book book1 = new Book(RandomStringUtils.random(5),"Custom Query",System.currentTimeMillis());
+        Book book2 = new Book(RandomStringUtils.random(5),null,System.currentTimeMillis());
         //indexing a book
         repository.save(Arrays.asList(book1,book2));
 
@@ -144,8 +146,8 @@ public class SampleBookRepositoryTest {
 
     @Test
     public void shoulExecuteCustomSearchQueries(){
-        Book book1 = new Book(RandomStringUtils.random(5),"Custom Query");
-        Book book2 = new Book(RandomStringUtils.random(5),"Elasticsearch QueryBuilder");
+        Book book1 = new Book(RandomStringUtils.random(5),"Custom Query",System.currentTimeMillis());
+        Book book2 = new Book(RandomStringUtils.random(5),"Elasticsearch QueryBuilder",System.currentTimeMillis());
         //bulk indexing two documents
         repository.save(Arrays.asList(book1,book2));
         QueryBuilder queryBuilder = QueryBuilders.fieldQuery("name",book1.getName());
