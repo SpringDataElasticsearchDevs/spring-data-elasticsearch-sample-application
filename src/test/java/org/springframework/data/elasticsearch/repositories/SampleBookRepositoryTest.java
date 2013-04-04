@@ -145,7 +145,7 @@ public class SampleBookRepositoryTest {
     }
 
     @Test
-    public void shoulExecuteCustomSearchQueries(){
+    public void shouldExecuteCustomSearchQuery(){
         Book book1 = new Book(RandomStringUtils.random(5),"Custom Query",System.currentTimeMillis());
         Book book2 = new Book(RandomStringUtils.random(5),"Elasticsearch QueryBuilder",System.currentTimeMillis());
         //bulk indexing two documents
