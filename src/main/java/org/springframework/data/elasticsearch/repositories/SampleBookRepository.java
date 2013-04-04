@@ -9,5 +9,5 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
 import java.util.List;
 
 public interface SampleBookRepository extends ElasticsearchRepository<Book,String> {
-    Page<Book> findByNameOrPrice(String name, Integer price, Pageable pageable);
+    Page<Book> findByNameAndPrice(String name, Integer price, Pageable pageable);
 }

@@ -164,8 +164,8 @@ public class SampleBookRepositoryTest {
         book2.setPrice(10L);
         repository.save(Arrays.asList(book1,book2));
 
-        Page<Book> books = repository.findByNameOrPrice("test",10, new PageRequest(0,10));
-        System.out.println(books.getContent().size());
+        Page<Book> books = repository.findByNameAndPrice("test",10, new PageRequest(0,10));
+        assertThat(books.getContent().size(), is(2));
     }
 
 }
