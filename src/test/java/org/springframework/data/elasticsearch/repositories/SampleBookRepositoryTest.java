@@ -156,6 +156,16 @@ public class SampleBookRepositoryTest {
         assertThat(books.getNumberOfElements(),is(equalTo(1)));
     }
 
+    @Test
+    public void shouldReturnBooksForCustomMethods(){
+        Book book1 = new Book(RandomStringUtils.random(5),"test",System.currentTimeMillis());
+        Book book2 = new Book(RandomStringUtils.random(5),"test",System.currentTimeMillis());
+        book1.setPrice(10L);
+        book2.setPrice(10L);
+        repository.save(Arrays.asList(book1,book2));
 
+        Page<Book> books = repository.findByNameOrPrice("test",10, new PageRequest(0,10));
+        System.out.println(books.getContent().size());
+    }
 
 }

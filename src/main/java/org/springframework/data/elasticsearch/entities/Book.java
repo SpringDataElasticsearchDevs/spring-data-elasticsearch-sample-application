@@ -1,8 +1,8 @@
 package org.springframework.data.elasticsearch.entities;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Version;
 import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.data.elasticsearch.annotations.Version;
 
 @Document(indexName = "book",type = "book")
 
