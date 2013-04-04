@@ -10,4 +10,5 @@ import java.util.List;
 
 public interface SampleBookRepository extends ElasticsearchRepository<Book,String> {
     Page<Book> findByNameAndPrice(String name, Integer price, Pageable pageable);
+    Page<Book> findByNameOrPrice(String name, Integer price, Pageable pageable);
 }
