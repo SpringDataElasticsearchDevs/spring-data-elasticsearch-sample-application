@@ -1,39 +1,30 @@
 package org.springframework.data.elasticsearch.repositories;
 
 import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.RandomUtils;
-import org.elasticsearch.index.query.BoolFilterBuilder;
-import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.data.elasticsearch.entities.Book;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static java.util.Arrays.asList;
-import static org.elasticsearch.index.query.FilterBuilders.*;
-import static org.elasticsearch.index.query.QueryBuilders.fieldQuery;
+import static org.elasticsearch.index.query.FilterBuilders.boolFilter;
+import static org.elasticsearch.index.query.FilterBuilders.existsFilter;
 import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 
 
@@ -164,7 +155,7 @@ public class SampleBookRepositoryTest {
         book2.setPrice(10L);
         repository.save(Arrays.asList(book1,book2));
 
-        Page<Book> books = repository.findByNameAndPrice("test",10, new PageRequest(0,10));
+        Page<Book> books = repository.findByNameAndPrice("test", 10, new PageRequest(0, 10));
         assertThat(books.getContent().size(), is(2));
     }
 
@@ -174,11 +165,11 @@ public class SampleBookRepositoryTest {
         Book book2 = new Book(RandomStringUtils.random(5),"test2",System.currentTimeMillis());
         repository.save(Arrays.asList(book1,book2));
 
-        Page<Book> books = repository.findByName("test1", new PageRequest(0,10));
+        Page<Book> books = repository.findByName("test1", new PageRequest(0, 10));
         assertThat(books.getContent().size(), is(1));
     }
 
-    //todo
+//    //todo
     @Ignore
     @Test
     public void shouldReturnBooksForCustomMethodsWithOrCriteria(){
@@ -188,8 +179,7 @@ public class SampleBookRepositoryTest {
         book2.setPrice(10L);
         repository.save(Arrays.asList(book1,book2));
 
-        Page<Book> books = repository.findByNameOrPrice("message",10, new PageRequest(0,10));
+        Page<Book> books = repository.findByNameOrPrice("message", 10, new PageRequest(0, 10));
         assertThat(books.getContent().size(), is(2));
     }
-
 }
