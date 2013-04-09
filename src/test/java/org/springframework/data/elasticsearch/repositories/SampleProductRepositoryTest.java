@@ -1,23 +1,17 @@
 package org.springframework.data.elasticsearch.repositories;
 
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.data.elasticsearch.entities.Product;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
+import java.util.List;
 
-import static org.elasticsearch.index.query.QueryBuilders.fieldQuery;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -33,25 +27,25 @@ public class SampleProductRepositoryTest {
     }
 
     @Test
-    public void shouldReturnSingleProductByName() {
+    public void shouldReturnListOfProductsByName() {
         //given
-        repository.index(new Product("1", "testProduct1",
+        repository.index(new Product("1", "test product 1",
                 "How great would it be if we could search for this product.",
                 true));
         repository
                 .index(new Product(
                         "2",
-                        "testProduct2",
+                        "test Product 2",
                         "How great would it be if we could search for this other product.",
                         true));
         //when
-        Product product = repository.findByName("testProduct2");
+        List<Product> products = repository.findByName("product");
         //then
-        assertNotNull(product);
+        assertThat(products.size(), is(2));
     }
 
     @Test
-    public void shouldReturnPageOfBookByName(){
+    public void shouldReturnListOfBookByNameWithPageable(){
         //given
         repository.index(new Product("1", "test product 1",
                 "How great would it be if we could search for this product.",
@@ -63,13 +57,13 @@ public class SampleProductRepositoryTest {
                         "How great would it be if we could search for this other product.",
                         true));
         //when
-        Page<Product> product = repository.findByName("product", new PageRequest(0,2));
+        List<Product> products = repository.findByName("product", new PageRequest(0,1));
         //then
-        assertThat(product.getContent().size(), is(2));
+        assertThat(products.size(), is(1));
     }
 
     @Test
-    public void shouldReturnPageOfBookUsingVariousSearchCriteria(){
+    public void shouldReturnListOfProductsForGivenNameAndId(){
         //given
         repository.save(new Product("1", "test product 1",
                 "How great would it be if we could search for this product.",
@@ -81,17 +75,9 @@ public class SampleProductRepositoryTest {
                         "How great would it be if we could search for this other product.",
                         true));
         //when
-        Page<Product> productsUsingQueryBuilder = repository.search(fieldQuery("name", "product"),new PageRequest(0,10));
+        List<Product> products = repository.findByNameAndId("product","1");
 
-        SearchQuery searchQuery = new SearchQuery();
-        searchQuery.setElasticsearchQuery(fieldQuery("name", "product"));
-        searchQuery.setPageable(new PageRequest(0,10));
-        Page<Product> productsUsingSearchQuery = repository.search(searchQuery);
         //then
-        assertThat(productsUsingQueryBuilder.getContent().size(), is(2));
-
-        assertThat(productsUsingSearchQuery.getContent().size(),is(2));
+        assertThat(products.size(),is(1));
     }
-
-
 }
