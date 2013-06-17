@@ -10,6 +10,8 @@ import org.junit.runner.RunWith;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.data.elasticsearch.entities.Book;
 import org.springframework.test.context.ContextConfiguration;
@@ -126,10 +128,11 @@ public class SampleBookRepositoryTest {
         //indexing a book
         repository.save(Arrays.asList(book1,book2));
 
-        SearchQuery searchQuery = new SearchQuery();
-        searchQuery.setElasticsearchQuery(matchAllQuery());
-        searchQuery.setElasticsearchFilter(boolFilter().must(existsFilter("name")));
-        searchQuery.setPageable(new PageRequest(0,10));
+        SearchQuery searchQuery = new NativeSearchQueryBuilder()
+                .withQuery(matchAllQuery())
+                .withFilter(boolFilter().must(existsFilter("name")))
+                .withPageable(new PageRequest(0,10))
+                .build();
 
         Page<Book> books = repository.search(searchQuery);
         assertThat(books.getNumberOfElements(), is(equalTo(1)));
