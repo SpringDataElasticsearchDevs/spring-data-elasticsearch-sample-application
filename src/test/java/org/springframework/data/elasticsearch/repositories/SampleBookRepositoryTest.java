@@ -66,7 +66,7 @@ public class SampleBookRepositoryTest {
         repository.save(asList(book1, book2));
         //lets try to search same records in elasticsearch
         Book indexedBook1 = repository.findOne(book1.getId());
-        assertThat(indexedBook1.getId(),is(book1.getId()));
+        assertThat(indexedBook1.getId(), is(book1.getId()));
         Book indexedBook2 = repository.findOne(book2.getId());
         assertThat(indexedBook2.getId(),is(book2.getId()));
     }
@@ -126,7 +126,7 @@ public class SampleBookRepositoryTest {
         Book book1 = new Book(RandomStringUtils.random(5),"Custom Query",System.currentTimeMillis());
         Book book2 = new Book(RandomStringUtils.random(5),null,System.currentTimeMillis());
         //indexing a book
-        repository.save(Arrays.asList(book1,book2));
+        repository.save(Arrays.asList(book1, book2));
 
         SearchQuery searchQuery = new NativeSearchQueryBuilder()
                 .withQuery(matchAllQuery())
@@ -143,7 +143,7 @@ public class SampleBookRepositoryTest {
         Book book1 = new Book(RandomStringUtils.random(5),"Custom Query",System.currentTimeMillis());
         Book book2 = new Book(RandomStringUtils.random(5),"Elasticsearch QueryBuilder",System.currentTimeMillis());
         //bulk indexing two documents
-        repository.save(Arrays.asList(book1,book2));
+        repository.save(Arrays.asList(book1, book2));
         QueryBuilder queryBuilder = QueryBuilders.fieldQuery("name",book1.getName());
         //searching in elasticsearch using repository Page<E> search(QueryBuilder q, PageRequest p ) method.
         Page<Book> books =  repository.search(queryBuilder,new PageRequest(0,20));
@@ -156,7 +156,7 @@ public class SampleBookRepositoryTest {
         Book book2 = new Book(RandomStringUtils.random(5),"test",System.currentTimeMillis());
         book1.setPrice(10L);
         book2.setPrice(10L);
-        repository.save(Arrays.asList(book1,book2));
+        repository.save(Arrays.asList(book1, book2));
 
         Page<Book> books = repository.findByNameAndPrice("test", 10, new PageRequest(0, 10));
         assertThat(books.getContent().size(), is(2));
@@ -166,7 +166,7 @@ public class SampleBookRepositoryTest {
     public void shouldReturnBooksWithName(){
         Book book1 = new Book(RandomStringUtils.random(5),"test1",System.currentTimeMillis());
         Book book2 = new Book(RandomStringUtils.random(5),"test2",System.currentTimeMillis());
-        repository.save(Arrays.asList(book1,book2));
+        repository.save(Arrays.asList(book1, book2));
 
         Page<Book> books = repository.findByName("test1", new PageRequest(0, 10));
         assertThat(books.getContent().size(), is(1));
@@ -180,7 +180,7 @@ public class SampleBookRepositoryTest {
         Book book2 = new Book(RandomStringUtils.random(5),"test And",System.currentTimeMillis());
         book1.setPrice(10L);
         book2.setPrice(10L);
-        repository.save(Arrays.asList(book1,book2));
+        repository.save(Arrays.asList(book1, book2));
 
         Page<Book> books = repository.findByNameOrPrice("message", 10, new PageRequest(0, 10));
         assertThat(books.getContent().size(), is(2));

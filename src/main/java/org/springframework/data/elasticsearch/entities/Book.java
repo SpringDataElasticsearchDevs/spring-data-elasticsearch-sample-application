@@ -4,8 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.elasticsearch.annotations.Document;
 
-@Document(indexName = "book",type = "book")
-
+@Document(indexName = "book",type = "book" , shards = 1, replicas = 0, indexStoreType = "memory")
 public class Book {
 
     @Id

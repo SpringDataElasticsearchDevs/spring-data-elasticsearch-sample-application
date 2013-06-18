@@ -19,27 +19,27 @@ import static org.junit.Assert.assertThat;
 public class SampleProductRepositoryTest {
 
     @Resource
-    private SampleProductRepository repository;
+    private SampleProductRepository sampleProductRepository;
 
     @Before
     public void emptyData(){
-        repository.deleteAll();
+        sampleProductRepository.deleteAll();
     }
 
     @Test
     public void shouldReturnListOfProductsByName() {
         //given
-        repository.index(new Product("1", "test product 1",
+        sampleProductRepository.index(new Product("1", "test product 1",
                 "How great would it be if we could search for this product.",
                 true));
-        repository
+        sampleProductRepository
                 .index(new Product(
                         "2",
                         "test Product 2",
                         "How great would it be if we could search for this other product.",
                         true));
         //when
-        List<Product> products = repository.findByName("product");
+        List<Product> products = sampleProductRepository.findByName("product");
         //then
         assertThat(products.size(), is(2));
     }
@@ -47,17 +47,17 @@ public class SampleProductRepositoryTest {
     @Test
     public void shouldReturnListOfBookByNameWithPageable(){
         //given
-        repository.index(new Product("1", "test product 1",
+        sampleProductRepository.index(new Product("1", "test product 1",
                 "How great would it be if we could search for this product.",
                 true));
-        repository
+        sampleProductRepository
                 .index(new Product(
                         "2",
                         "test product 2",
                         "How great would it be if we could search for this other product.",
                         true));
         //when
-        List<Product> products = repository.findByName("product", new PageRequest(0,1));
+        List<Product> products = sampleProductRepository.findByName("product", new PageRequest(0,1));
         //then
         assertThat(products.size(), is(1));
     }
@@ -65,17 +65,17 @@ public class SampleProductRepositoryTest {
     @Test
     public void shouldReturnListOfProductsForGivenNameAndId(){
         //given
-        repository.save(new Product("1", "test product 1",
+        sampleProductRepository.save(new Product("1", "test product 1",
                 "How great would it be if we could search for this product.",
                 true));
-        repository
+        sampleProductRepository
                 .save(new Product(
                         "2",
                         "test product 2",
                         "How great would it be if we could search for this other product.",
                         true));
         //when
-        List<Product> products = repository.findByNameAndId("product","1");
+        List<Product> products = sampleProductRepository.findByNameAndId("product","1");
 
         //then
         assertThat(products.size(),is(1));
