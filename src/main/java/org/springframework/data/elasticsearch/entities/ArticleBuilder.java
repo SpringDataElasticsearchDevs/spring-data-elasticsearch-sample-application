@@ -2,6 +2,9 @@ package org.springframework.data.elasticsearch.entities;
 
 import org.springframework.data.elasticsearch.core.query.IndexQuery;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ArticleBuilder {
 
     private Article resutl;
@@ -32,6 +35,17 @@ public class ArticleBuilder {
 
     public Article build() {
         return resutl;
+    }
+
+    public ArticleBuilder addTag(String tag) {
+        List<String> tagsTmp = new ArrayList<String>();
+        if(resutl.getTags()==null){
+            resutl.setTags(tagsTmp);
+        }else {
+            tagsTmp = (List<String>) resutl.getTags();
+        }
+        tagsTmp.add(tag);
+        return this;
     }
 
     public IndexQuery buildIndex() {

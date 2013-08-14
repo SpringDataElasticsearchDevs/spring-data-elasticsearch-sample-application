@@ -7,6 +7,7 @@ import org.springframework.data.elasticsearch.annotations.MultiField;
 import org.springframework.data.elasticsearch.annotations.NestedField;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import static org.springframework.data.elasticsearch.annotations.FieldIndex.analyzed;
@@ -32,7 +33,10 @@ public class Article {
     private List<String> authors = new ArrayList<String>();
 
     @Field(type = Integer, store = true)
-    private List<Integer> publishedYears = new ArrayList<Integer>();
+    private List<Integer> publishedYears;
+
+    @Field(type = String, store = true)
+    private Collection<String> tags;
 
     private int score;
 
@@ -82,5 +86,13 @@ public class Article {
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public Collection<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(Collection<String> tags) {
+        this.tags = tags;
     }
 }
