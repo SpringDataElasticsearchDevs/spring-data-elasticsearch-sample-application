@@ -13,6 +13,40 @@
         <spring.version>3.1.2.RELEASE</spring.version>
     </properties>
 
+    <profiles>
+        <profile>
+            <id>default</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <repositories>
+            <repository>
+                <id>spring-snapshot</id>
+                <name>Spring Maven SNAPSHOT Repository</name>
+                <url>http://repo.springsource.org/libs-snapshot</url>
+            </repository>
+            </repositories>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>com.springsource.repository.bundles.release</id>
+                    <url>http://repository.springsource.com/maven/bundles/release</url>
+                </pluginRepository>
+                <pluginRepository>
+                    <id>central</id>
+                    <name>Central Repository</name>
+                    <url>http://repo.maven.apache.org/maven2</url>
+                    <layout>default</layout>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                    <releases>
+                        <updatePolicy>never</updatePolicy>
+                    </releases>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
+    </profiles>
+
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
