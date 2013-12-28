@@ -184,4 +184,17 @@ public class SampleBookRepositoryTest {
         Page<Book> books = repository.findByNameOrPrice("message", 10, new PageRequest(0, 10));
         assertThat(books.getContent().size(), is(2));
     }
+
+    @Test
+    public void shouldGiveIterableOfBooks() {
+        Book book1 = new Book(RandomStringUtils.random(5),"test Or",System.currentTimeMillis());
+        Book book2 = new Book(RandomStringUtils.random(5),"test And",System.currentTimeMillis());
+        book1.setPrice(10L);
+        book2.setPrice(10L);
+        repository.save(Arrays.asList(book1, book2));
+
+        Iterable<Book> books = repository.search(matchAllQuery());
+        assertThat(books, is(notNullValue()));
+    }
+
 }
