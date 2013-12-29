@@ -65,7 +65,6 @@ public class ElasticsearchFacetTests {
     @Test
     public void shouldReturnFacetedAuthorsForGivenQueryWithDefaultOrder() {
 
-        // given
         String facetName = "fauthors";
         SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(matchAllQuery()).withFacet(new TermFacetRequestBuilder(facetName).fields("authors.untouched").build()).build();
         // when

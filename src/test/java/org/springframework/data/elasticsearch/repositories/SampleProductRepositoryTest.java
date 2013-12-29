@@ -74,7 +74,6 @@ public class SampleProductRepositoryTest {
                         "test product 2",
                         "How great would it be if we could search for this other product.",
                         true));
-        //when
         List<Product> products = sampleProductRepository.findByNameAndId("product","1");
 
         //then
