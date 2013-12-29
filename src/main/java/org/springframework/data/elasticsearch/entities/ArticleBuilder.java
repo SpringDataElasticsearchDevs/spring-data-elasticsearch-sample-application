@@ -7,42 +7,42 @@ import java.util.List;
 
 public class ArticleBuilder {
 
-    private Article resutl;
+    private Article result;
 
     public ArticleBuilder(String id) {
-        resutl = new Article(id);
+        result = new Article(id);
     }
 
     public ArticleBuilder title(String title) {
-        resutl.setTitle(title);
+        result.setTitle(title);
         return this;
     }
 
     public ArticleBuilder addAuthor(String author) {
-        resutl.getAuthors().add(author);
+        result.getAuthors().add(author);
         return this;
     }
 
     public ArticleBuilder addPublishedYear(Integer year) {
-        resutl.getPublishedYears().add(year);
+        result.getPublishedYears().add(year);
         return this;
     }
 
     public ArticleBuilder score(int score) {
-        resutl.setScore(score);
+        result.setScore(score);
         return this;
     }
 
     public Article build() {
-        return resutl;
+        return result;
     }
 
     public ArticleBuilder addTag(String tag) {
         List<String> tagsTmp = new ArrayList<String>();
-        if(resutl.getTags()==null){
-            resutl.setTags(tagsTmp);
+        if(result.getTags()==null){
+            result.setTags(tagsTmp);
         }else {
-            tagsTmp = (List<String>) resutl.getTags();
+            tagsTmp = (List<String>) result.getTags();
         }
         tagsTmp.add(tag);
         return this;
@@ -50,8 +50,8 @@ public class ArticleBuilder {
 
     public IndexQuery buildIndex() {
         IndexQuery indexQuery = new IndexQuery();
-        indexQuery.setId(resutl.getId());
-        indexQuery.setObject(resutl);
+        indexQuery.setId(result.getId());
+        indexQuery.setObject(result);
         return indexQuery;
     }
 
