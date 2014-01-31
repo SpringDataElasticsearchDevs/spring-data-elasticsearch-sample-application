@@ -49,7 +49,6 @@ public class SampleBookRepositoryTest {
         book.setId("123455");
         book.setName("Spring Data Elasticsearch");
         book.setVersion(System.currentTimeMillis());
-        //Indexing using repository
         repository.save(book);
         //lets try to search same record in elasticsearch
         Book indexedBook = repository.findOne(book.getId());
