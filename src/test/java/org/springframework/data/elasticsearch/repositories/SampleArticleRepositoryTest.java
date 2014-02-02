@@ -33,7 +33,7 @@ public class SampleArticleRepositoryTest {
 
         Article article = new Article();
         article.setId("123455");
-        article.setTitle("Spring Data Elasticsearch Article");
+        article.setTitle("Spring Data Elasticsearch Test Article");
         List<String> authors = new ArrayList<String>();
         authors.add("Author1");
         authors.add("Author2");
