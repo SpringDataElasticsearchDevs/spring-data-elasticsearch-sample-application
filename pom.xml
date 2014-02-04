@@ -21,9 +21,9 @@
             </activation>
             <repositories>
             <repository>
-                <id>spring-snapshot</id>
-                <name>Spring Maven SNAPSHOT Repository</name>
-                <url>http://repo.springsource.org/libs-snapshot</url>
+                <id>spring-milestone</id>
+                <name>Spring Maven Milestone Repository</name>
+                <url>http://repo.springsource.org/libs-milestone</url>
             </repository>
             </repositories>
             <pluginRepositories>
