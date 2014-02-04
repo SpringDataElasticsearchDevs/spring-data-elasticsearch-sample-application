@@ -19,6 +19,7 @@ import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
+import org.springframework.data.elasticsearch.entities.Book;
 import org.springframework.data.elasticsearch.entities.Person;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -38,6 +39,9 @@ public class NestedObjectTests {
 
     @Before
     public void before() {
+        elasticsearchTemplate.deleteIndex(Book.class);
+        elasticsearchTemplate.createIndex(Book.class);
+        elasticsearchTemplate.refresh(Book.class, true);
         elasticsearchTemplate.deleteIndex(Person.class);
         elasticsearchTemplate.createIndex(Person.class);
         elasticsearchTemplate.putMapping(Person.class);
