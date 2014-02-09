@@ -16,13 +16,20 @@
 package org.springframework.data.elasticsearch.repositories;
 
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
+import org.springframework.data.elasticsearch.entities.Author;
 import org.springframework.data.elasticsearch.entities.Book;
 import org.springframework.data.elasticsearch.entities.Person;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import static org.apache.commons.lang.RandomStringUtils.randomAlphanumeric;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNull.notNullValue;
+import static org.junit.Assert.assertThat;
 
 /**
  * @author Rizwan Idrees
@@ -36,6 +43,8 @@ public class NestedObjectTests {
 	@Autowired
     private ElasticsearchTemplate elasticsearchTemplate;
 
+    @Autowired
+    private SampleBookRepository bookRepository;
 
     @Before
     public void before() {
@@ -46,5 +55,21 @@ public class NestedObjectTests {
         elasticsearchTemplate.createIndex(Person.class);
         elasticsearchTemplate.putMapping(Person.class);
         elasticsearchTemplate.refresh(Person.class, true);
+    }
+
+    @Test
+    public void shouldIndexInnerObject() {
+        // given
+        String id = randomAlphanumeric(5);
+        Book book = new Book();
+        book.setId(id);
+        book.setName("xyz");
+        Author author = new Author();
+        author.setId("1");
+        author.setName("ABC");
+        // when
+        bookRepository.save(book);
+        // then
+        assertThat(bookRepository.findOne(id), is(notNullValue()));
     }
 }
