@@ -137,7 +137,7 @@ public class SampleBookRepositoryTest {
         assertThat(books.getNumberOfElements(), is(equalTo(1)));
     }
 
-    @Test
+    /*@Test
     public void shouldExecuteCustomSearchQuery(){
         Book book1 = new Book(RandomStringUtils.random(5),"Custom Query",System.currentTimeMillis());
         Book book2 = new Book(RandomStringUtils.random(5),"Elasticsearch QueryBuilder",System.currentTimeMillis());
@@ -147,7 +147,7 @@ public class SampleBookRepositoryTest {
         //searching in elasticsearch using repository Page<E> search(QueryBuilder q, PageRequest p ) method.
         Page<Book> books =  repository.search(queryBuilder,new PageRequest(0,20));
         assertThat(books.getNumberOfElements(),is(equalTo(1)));
-    }
+    }*/
 
     @Test
     public void shouldReturnBooksForCustomMethodsWithAndCriteria(){

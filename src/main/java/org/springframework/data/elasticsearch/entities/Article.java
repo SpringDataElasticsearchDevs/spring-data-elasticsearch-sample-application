@@ -33,10 +33,10 @@ public class Article {
     private List<String> authors = new ArrayList<String>();
 
     @Field(type = Integer, store = true)
-    private List<Integer> publishedYears;
+    private List<Integer> publishedYears = new ArrayList<Integer>();
 
     @Field(type = String, store = true)
-    private Collection<String> tags;
+    private Collection<String> tags = new ArrayList<String>();
 
     private int score;
 
