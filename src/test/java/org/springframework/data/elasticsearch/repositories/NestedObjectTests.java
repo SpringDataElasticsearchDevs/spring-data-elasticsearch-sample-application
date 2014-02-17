@@ -76,6 +76,7 @@ public class NestedObjectTests {
         Book book = new Book();
         book.setId(id);
         book.setName("xyz");
+        book.setVersion(System.nanoTime());
         Author author = new Author();
         author.setId("1");
         author.setName("ABC");

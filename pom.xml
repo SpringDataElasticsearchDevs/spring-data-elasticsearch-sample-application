@@ -10,7 +10,7 @@
 
     <properties>
         <junit.version>4.11</junit.version>
-        <spring.version>3.1.2.RELEASE</spring.version>
+        <spring.version>4.0.0.RELEASE</spring.version>
     </properties>
 
     <profiles>
@@ -25,6 +25,13 @@
                 <name>Spring Maven Milestone Repository</name>
                 <url>http://repo.springsource.org/libs-milestone</url>
             </repository>
+                <repository>
+                    <id>com.springsource.repository.maven.snapshot</id>
+                    <url>http://maven.springframework.org/snapshot/</url>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </repository>
             </repositories>
             <pluginRepositories>
                 <pluginRepository>
