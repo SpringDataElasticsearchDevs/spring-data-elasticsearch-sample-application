@@ -24,10 +24,7 @@ import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.query.IndexQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
-import org.springframework.data.elasticsearch.entities.Author;
-import org.springframework.data.elasticsearch.entities.Book;
-import org.springframework.data.elasticsearch.entities.Car;
-import org.springframework.data.elasticsearch.entities.Person;
+import org.springframework.data.elasticsearch.entities.*;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -67,6 +64,10 @@ public class NestedObjectTests {
         elasticsearchTemplate.createIndex(Person.class);
         elasticsearchTemplate.putMapping(Person.class);
         elasticsearchTemplate.refresh(Person.class, true);
+		elasticsearchTemplate.deleteIndex(PersonMultipleLevelNested.class);
+		elasticsearchTemplate.createIndex(PersonMultipleLevelNested.class);
+		elasticsearchTemplate.putMapping(PersonMultipleLevelNested.class);
+		elasticsearchTemplate.refresh(PersonMultipleLevelNested.class, true);
     }
 
     @Test
