@@ -148,4 +148,61 @@ public class NestedObjectTests {
 
     }
 
+	private List<IndexQuery> createPerson() {
+
+		PersonMultipleLevelNested person1 = new PersonMultipleLevelNested();
+
+		person1.setId("1");
+		person1.setName("name");
+
+		Car saturn = new Car();
+		saturn.setName("Saturn");
+		saturn.setModel("SL");
+
+		Car subaru = new Car();
+		subaru.setName("Subaru");
+		subaru.setModel("Imprezza");
+
+		Car car = new Car();
+		car.setName("Saturn");
+		car.setModel("Imprezza");
+
+		Car ford = new Car();
+		ford.setName("Ford");
+		ford.setModel("Focus");
+
+		GirlFriend permanent = new GirlFriend();
+		permanent.setName("permanent");
+		permanent.setType("permanent");
+		permanent.setCars(Arrays.asList(saturn, subaru));
+
+		GirlFriend temp = new GirlFriend();
+		temp.setName("temp");
+		temp.setType("temp");
+		temp.setCars(Arrays.asList(car, ford));
+
+		person1.setGirlFriends(Arrays.asList(permanent, temp));
+
+		IndexQuery indexQuery1 = new IndexQuery();
+		indexQuery1.setId(person1.getId());
+		indexQuery1.setObject(person1);
+
+		PersonMultipleLevelNested person2 = new PersonMultipleLevelNested();
+
+		person2.setId("2");
+		person2.setName("name");
+
+		person2.setGirlFriends(Arrays.asList(permanent));
+
+		IndexQuery indexQuery2 = new IndexQuery();
+		indexQuery2.setId(person2.getId());
+		indexQuery2.setObject(person2);
+
+		List<IndexQuery> indexQueries = new ArrayList<IndexQuery>();
+		indexQueries.add(indexQuery1);
+		indexQueries.add(indexQuery2);
+
+		return indexQueries;
+	}
+
 }
