@@ -21,6 +21,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
+import org.springframework.data.elasticsearch.core.query.GetQuery;
 import org.springframework.data.elasticsearch.core.query.IndexQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
@@ -147,6 +148,24 @@ public class NestedObjectTests {
         assertThat(persons.size() , is(1));
 
     }
+
+	@Test
+	public void shouldIndexMultipleLevelNestedObject() {
+		//given
+		List<IndexQuery> indexQueries = createPerson();
+
+		//when
+		elasticsearchTemplate.putMapping(PersonMultipleLevelNested.class);
+		elasticsearchTemplate.bulkIndex(indexQueries);
+		elasticsearchTemplate.refresh(PersonMultipleLevelNested.class, true);
+
+		//then
+		GetQuery getQuery = new GetQuery();
+		getQuery.setId("1");
+		PersonMultipleLevelNested personIndexed = elasticsearchTemplate.queryForObject(getQuery, PersonMultipleLevelNested.class);
+		assertThat(personIndexed, is(notNullValue()));
+	}
+
 
 	private List<IndexQuery> createPerson() {
 
