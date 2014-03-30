@@ -1,8 +1,6 @@
 package org.springframework.data.elasticsearch.repositories;
 
 import org.apache.commons.lang.RandomStringUtils;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -10,34 +8,35 @@ import org.junit.runner.RunWith;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.data.elasticsearch.entities.Book;
+import org.springframework.data.elasticsearch.repositories.book.SampleBookRepository;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static java.util.Arrays.asList;
-import static org.elasticsearch.index.query.FilterBuilders.boolFilter;
-import static org.elasticsearch.index.query.FilterBuilders.existsFilter;
-import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
+import static org.elasticsearch.index.query.FilterBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:/springContext-test.xml")
+@ContextConfiguration("classpath:/springContext-book-test.xml")
 public class SampleBookRepositoryTest {
 
     @Resource
     private SampleBookRepository repository;
 
-    @Before
+    @Resource
+	private ElasticsearchTemplate template;
+
+	@Before
     public void emptyData(){
         repository.deleteAll();
     }
@@ -171,7 +170,64 @@ public class SampleBookRepositoryTest {
         assertThat(books.getContent().size(), is(1));
     }
 
-//    //todo
+	@Test
+	public void shouldReturnBooksForGivenBucket(){
+		Book book1 = new Book(RandomStringUtils.random(5),"test1",System.currentTimeMillis());
+		Book book2 = new Book(RandomStringUtils.random(5),"test2",System.currentTimeMillis());
+
+		Map<Integer, Collection<String>> map1 = new HashMap<Integer, Collection<String>>();
+		map1.put(1, Arrays.asList("test1", "test2"));
+
+		Map<Integer, Collection<String>> map2 = new HashMap<Integer, Collection<String>>();
+		map2.put(1, Arrays.asList("test3", "test4"));
+
+		book1.setBuckets(map1);
+		book2.setBuckets(map2);
+
+		repository.save(Arrays.asList(book1,book2));
+
+		SearchQuery searchQuery = new NativeSearchQueryBuilder()
+				.withQuery(nestedQuery("buckets", termQuery("buckets.1", "test3")))
+				.build();
+
+		Page<Book> books = repository.search(searchQuery);
+
+		assertThat(books.getContent().size(), is(1));
+	}
+
+
+	@Test
+	public void shouldReturnBooksForGivenBucketUsingTemplate(){
+
+		template.deleteIndex(Book.class);
+		template.createIndex(Book.class);
+		template.putMapping(Book.class);
+		template.refresh(Book.class, true);
+
+		Book book1 = new Book(RandomStringUtils.random(5),"test1",System.currentTimeMillis());
+		Book book2 = new Book(RandomStringUtils.random(5),"test2",System.currentTimeMillis());
+
+		Map<Integer, Collection<String>> map1 = new HashMap<Integer, Collection<String>>();
+		map1.put(1, Arrays.asList("test1", "test2"));
+
+		Map<Integer, Collection<String>> map2 = new HashMap<Integer, Collection<String>>();
+		map2.put(1, Arrays.asList("test3", "test4"));
+
+		book1.setBuckets(map1);
+		book2.setBuckets(map2);
+
+		repository.save(Arrays.asList(book1,book2));
+
+		SearchQuery searchQuery = new NativeSearchQueryBuilder()
+				.withQuery(nestedQuery("buckets", termQuery("buckets.1", "test3")))
+				.build();
+
+		Page<Book> books = repository.search(searchQuery);
+
+		assertThat(books.getContent().size(), is(1));
+	}
+
+	//    //todo
     @Ignore
     @Test
     public void shouldReturnBooksForCustomMethodsWithOrCriteria(){

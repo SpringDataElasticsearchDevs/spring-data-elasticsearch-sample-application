@@ -1,8 +1,14 @@
 package org.springframework.data.elasticsearch.entities;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
 @Document(indexName = "book",type = "book" , shards = 1, replicas = 0, indexStoreType = "memory", refreshInterval = "-1")
 public class Book {
@@ -13,6 +19,17 @@ public class Book {
     private Long price;
     @Version
     private Long version;
+
+	public Map<Integer, Collection<String>> getBuckets() {
+		return buckets;
+	}
+
+	public void setBuckets(Map<Integer, Collection<String>> buckets) {
+		this.buckets = buckets;
+	}
+
+	@Field(type = FieldType.Nested)
+	private Map<Integer, Collection<String>> buckets = new HashMap();
 
     public Book(){}
 

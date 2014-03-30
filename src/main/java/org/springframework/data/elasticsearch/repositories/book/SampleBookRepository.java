@@ -1,4 +1,4 @@
-package org.springframework.data.elasticsearch.repositories;
+package org.springframework.data.elasticsearch.repositories.book;
 
 
 import org.springframework.data.domain.Page;
